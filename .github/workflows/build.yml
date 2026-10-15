@@ -2,6 +2,8 @@ name: APK 만들기
 on:
   push:
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,3 +25,10 @@ jobs:
         with:
           name: byeonsin-apk
           path: byeonsin-app/app/build/outputs/apk/debug/app-debug.apk
+      - name: 업데이트 버튼용으로 올리기
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: app-${{ github.run_number }}
+          name: 변신 다이어리 1.${{ github.run_number }}
+          make_latest: true
+          files: byeonsin-app/app/build/outputs/apk/debug/app-debug.apk
